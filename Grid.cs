@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FastestRoute
@@ -15,7 +11,11 @@ namespace FastestRoute
         private int GridWidth;
         private int GridHeight;
         private Graph CartesianPlane;
-        private List<Node> Route;
+        /// <summary>
+        /// Fastest route find, this is used to paint the route yellow
+        /// </summary>
+        private List<Node> Route; 
+        
         public Grid()
         {
             InitializeComponent();
@@ -54,6 +54,9 @@ namespace FastestRoute
             CartesianPlane.AddEdge(f, b);
 
             UpdateVerticesList();
+
+            cmb_route_from.SelectedIndex = 0;
+            cmb_route_to.SelectedIndex = 5;
 #endif
         }
 
@@ -90,9 +93,15 @@ namespace FastestRoute
             return int.TryParse(text, out int number);
         }
 
+        /// <summary>
+        /// Reload the intems in cmb_vetices_list, cmb_route_from, cmb_route_to with all the vertices on CartesianPlane.Matrix
+        /// </summary>
         private void UpdateVerticesList()
         {
             cmb_vetices_list.Items.Clear();
+            cmb_route_from.Items.Clear();
+            cmb_route_to.Items.Clear();
+
             cmb_vetices_list.Items.Add("ADD NEW");
             foreach (var node in CartesianPlane.Matrix)
             {
@@ -148,8 +157,7 @@ namespace FastestRoute
                     int ex = (int)(edge.X * verticalLineSpacing);
                     int ey = (int)(edge.Y * horizontalLineSpacing);
 
-                    if(Route.IndexOf(vertex.Value) >= 0 && Route.IndexOf(edge) >= 0  && Route.IndexOf(edge)-1 == Route.IndexOf(vertex.Value))
-                        
+                    if(Route.IndexOf(vertex.Value) >= 0 && Route.IndexOf(edge) >= 0 && Route.IndexOf(edge)-1 == Route.IndexOf(vertex.Value))                        
                         graphics.DrawLine(edgePenRoute, vx, vy, ex, ey);
                     else
                         graphics.DrawLine(edgePen, vx, vy, ex, ey);
@@ -215,9 +223,8 @@ namespace FastestRoute
 
         private void btn_vertices_add_update_Click(object sender, EventArgs e)
         {
-            //add operation
             //Check if input is valid
-            if(string.IsNullOrEmpty(txt_vertices_name.Text))
+            if (string.IsNullOrEmpty(txt_vertices_name.Text))
             {
                 MessageBox.Show("Vertex Name is invalid");
                 return;
@@ -249,6 +256,12 @@ namespace FastestRoute
             }
             else //add method
             {
+                if (CartesianPlane.Matrix.ContainsKey(txt_vertices_name.Text))
+                {
+                    MessageBox.Show("Vertex is already on the list");
+                    return;
+                }
+
                 CartesianPlane.AddVertex(
                 new Node(txt_vertices_name.Text,
                 Convert.ToInt32(txt_vertices_x.Text),
@@ -257,14 +270,15 @@ namespace FastestRoute
                 UpdateVerticesList();
             }
 
-            Route.Clear();
+            Route.Clear(); //remove any previously calculated route
             pnl_grid.Invalidate(); //refresh the grid
-            cmb_vetices_list.SelectedIndex = 0;
+            cmb_vetices_list.SelectedIndex = 0; //set the selector to ADD NEW
         }
 
         private void cmb_vetices_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmb_vetices_list.SelectedItem == "ADD NEW")
+            //if it is a add operation I clear all the input fields
+            if (cmb_vetices_list.SelectedItem == "ADD NEW")
             {
                 txt_vertices_name.Clear();
                 txt_vertices_x.Clear();
@@ -274,12 +288,14 @@ namespace FastestRoute
             }
             else
             {
+                //load the node value on the input fields
                 Node vertex = CartesianPlane.GetVertex(cmb_vetices_list.SelectedItem.ToString());
                 txt_vertices_name.Text = vertex.Name;
                 txt_vertices_x.Text = vertex.X.ToString();
                 txt_vertices_y.Text = vertex.Y.ToString();
                 txt_vertices_name.Enabled = false; //will not let the user change the name otherwise I will lose the key reference
 
+                //load the checkbox list for the selected vertex
                 chb_vertices_edges.Items.Clear();
                 int chbIndex = 0;
                 foreach (var node in CartesianPlane.Matrix)
@@ -301,13 +317,23 @@ namespace FastestRoute
             Node origin = CartesianPlane.GetVertex(cmb_route_from.SelectedItem.ToString());
             Node target = CartesianPlane.GetVertex(cmb_route_to.SelectedItem.ToString());
 
-            Route = CartesianPlane.DepthFirstSearch(origin, target);
+            Route = CartesianPlane.RouteSearch(origin, target); //call the search
             pnl_grid.Invalidate();
 
             string display = "";
-            foreach(var point in Route)
+            if (Route == null) //if the search didnt yeld any results 
             {
-                display += $"{point.Name} --> ";
+                display = "No route available!";
+            }
+            else
+            {
+                display = "The fastest route is\n";
+
+                foreach (var point in Route)
+                    display += $"{point.Name} --> ";
+
+                display = display.Substring(0, display.Length - 5);
+                display += $"\nDistance is {Route.Sum(x => x.DistanceFromEdge)}"; //calculted the distance from sourece to target
             }
 
             MessageBox.Show(display);

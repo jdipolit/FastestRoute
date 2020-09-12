@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Grid));
             this.grb_gridsize = new System.Windows.Forms.GroupBox();
             this.btn_gridsize_set = new System.Windows.Forms.Button();
             this.lbl_gridsize_pxwidth = new System.Windows.Forms.Label();
@@ -37,6 +38,9 @@
             this.lbl_gridsize_width = new System.Windows.Forms.Label();
             this.lbl_gridsize_height = new System.Windows.Forms.Label();
             this.grb_vertices = new System.Windows.Forms.GroupBox();
+            this.cmb_vetices_list = new System.Windows.Forms.ComboBox();
+            this.txt_vertices_name = new System.Windows.Forms.TextBox();
+            this.lbl_vertices_name = new System.Windows.Forms.Label();
             this.chb_vertices_edges = new System.Windows.Forms.CheckedListBox();
             this.btn_vertices_add_update = new System.Windows.Forms.Button();
             this.lbl_vertices_pxy = new System.Windows.Forms.Label();
@@ -46,15 +50,12 @@
             this.lbl_vertices_y = new System.Windows.Forms.Label();
             this.lbl_vertices_x = new System.Windows.Forms.Label();
             this.pnl_grid = new System.Windows.Forms.Panel();
-            this.txt_vertices_name = new System.Windows.Forms.TextBox();
-            this.lbl_vertices_name = new System.Windows.Forms.Label();
-            this.cmb_vetices_list = new System.Windows.Forms.ComboBox();
             this.btn_route_find = new System.Windows.Forms.Button();
             this.cmb_route_from = new System.Windows.Forms.ComboBox();
             this.grb_route = new System.Windows.Forms.GroupBox();
-            this.cmb_route_to = new System.Windows.Forms.ComboBox();
-            this.lbl_route_from = new System.Windows.Forms.Label();
             this.lbl_route_to = new System.Windows.Forms.Label();
+            this.lbl_route_from = new System.Windows.Forms.Label();
+            this.cmb_route_to = new System.Windows.Forms.ComboBox();
             this.grb_gridsize.SuspendLayout();
             this.grb_vertices.SuspendLayout();
             this.grb_route.SuspendLayout();
@@ -165,6 +166,33 @@
             this.grb_vertices.TabStop = false;
             this.grb_vertices.Text = "Add to the grid";
             // 
+            // cmb_vetices_list
+            // 
+            this.cmb_vetices_list.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_vetices_list.FormattingEnabled = true;
+            this.cmb_vetices_list.Location = new System.Drawing.Point(6, 30);
+            this.cmb_vetices_list.Name = "cmb_vetices_list";
+            this.cmb_vetices_list.Size = new System.Drawing.Size(138, 26);
+            this.cmb_vetices_list.TabIndex = 0;
+            this.cmb_vetices_list.SelectedIndexChanged += new System.EventHandler(this.cmb_vetices_list_SelectedIndexChanged);
+            // 
+            // txt_vertices_name
+            // 
+            this.txt_vertices_name.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.txt_vertices_name.Location = new System.Drawing.Point(62, 64);
+            this.txt_vertices_name.Name = "txt_vertices_name";
+            this.txt_vertices_name.Size = new System.Drawing.Size(82, 24);
+            this.txt_vertices_name.TabIndex = 0;
+            // 
+            // lbl_vertices_name
+            // 
+            this.lbl_vertices_name.AutoSize = true;
+            this.lbl_vertices_name.Location = new System.Drawing.Point(8, 67);
+            this.lbl_vertices_name.Name = "lbl_vertices_name";
+            this.lbl_vertices_name.Size = new System.Drawing.Size(52, 18);
+            this.lbl_vertices_name.TabIndex = 8;
+            this.lbl_vertices_name.Text = "Name:";
+            // 
             // chb_vertices_edges
             // 
             this.chb_vertices_edges.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -254,33 +282,6 @@
             this.pnl_grid.TabIndex = 8;
             this.pnl_grid.Paint += new System.Windows.Forms.PaintEventHandler(this.pnl_grid_Paint);
             // 
-            // txt_vertices_name
-            // 
-            this.txt_vertices_name.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txt_vertices_name.Location = new System.Drawing.Point(62, 64);
-            this.txt_vertices_name.Name = "txt_vertices_name";
-            this.txt_vertices_name.Size = new System.Drawing.Size(82, 24);
-            this.txt_vertices_name.TabIndex = 0;
-            // 
-            // lbl_vertices_name
-            // 
-            this.lbl_vertices_name.AutoSize = true;
-            this.lbl_vertices_name.Location = new System.Drawing.Point(8, 67);
-            this.lbl_vertices_name.Name = "lbl_vertices_name";
-            this.lbl_vertices_name.Size = new System.Drawing.Size(52, 18);
-            this.lbl_vertices_name.TabIndex = 8;
-            this.lbl_vertices_name.Text = "Name:";
-            // 
-            // cmb_vetices_list
-            // 
-            this.cmb_vetices_list.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_vetices_list.FormattingEnabled = true;
-            this.cmb_vetices_list.Location = new System.Drawing.Point(6, 30);
-            this.cmb_vetices_list.Name = "cmb_vetices_list";
-            this.cmb_vetices_list.Size = new System.Drawing.Size(138, 26);
-            this.cmb_vetices_list.TabIndex = 0;
-            this.cmb_vetices_list.SelectedIndexChanged += new System.EventHandler(this.cmb_vetices_list_SelectedIndexChanged);
-            // 
             // btn_route_find
             // 
             this.btn_route_find.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -320,6 +321,24 @@
             this.grb_route.TabStop = false;
             this.grb_route.Text = "Add to the grid";
             // 
+            // lbl_route_to
+            // 
+            this.lbl_route_to.AutoSize = true;
+            this.lbl_route_to.Location = new System.Drawing.Point(30, 77);
+            this.lbl_route_to.Name = "lbl_route_to";
+            this.lbl_route_to.Size = new System.Drawing.Size(30, 18);
+            this.lbl_route_to.TabIndex = 10;
+            this.lbl_route_to.Text = "To:";
+            // 
+            // lbl_route_from
+            // 
+            this.lbl_route_from.AutoSize = true;
+            this.lbl_route_from.Location = new System.Drawing.Point(12, 27);
+            this.lbl_route_from.Name = "lbl_route_from";
+            this.lbl_route_from.Size = new System.Drawing.Size(48, 18);
+            this.lbl_route_from.TabIndex = 9;
+            this.lbl_route_from.Text = "From:";
+            // 
             // cmb_route_to
             // 
             this.cmb_route_to.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -331,24 +350,6 @@
             this.cmb_route_to.Size = new System.Drawing.Size(138, 26);
             this.cmb_route_to.TabIndex = 5;
             // 
-            // lbl_route_from
-            // 
-            this.lbl_route_from.AutoSize = true;
-            this.lbl_route_from.Location = new System.Drawing.Point(12, 27);
-            this.lbl_route_from.Name = "lbl_route_from";
-            this.lbl_route_from.Size = new System.Drawing.Size(48, 18);
-            this.lbl_route_from.TabIndex = 9;
-            this.lbl_route_from.Text = "From:";
-            // 
-            // lbl_route_to
-            // 
-            this.lbl_route_to.AutoSize = true;
-            this.lbl_route_to.Location = new System.Drawing.Point(30, 77);
-            this.lbl_route_to.Name = "lbl_route_to";
-            this.lbl_route_to.Size = new System.Drawing.Size(30, 18);
-            this.lbl_route_to.TabIndex = 10;
-            this.lbl_route_to.Text = "To:";
-            // 
             // Grid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -359,6 +360,7 @@
             this.Controls.Add(this.grb_vertices);
             this.Controls.Add(this.grb_gridsize);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Grid";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
